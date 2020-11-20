@@ -9,24 +9,25 @@ class TestInsertInsertBeforeInsertAfter(unittest.TestCase):
         ################################        Test insert         #####################################
         
         #A really simple test case to check if we get expected output after applying insert as the documentation describes
-        def test_insert_simple(self):
+        def test_insert_simple_string(self):
             self.simple_soup.a.insert(1, "Hai There")
             self.assertEqual(str(self.simple_soup), "<a><b><c>Hi, I'm a test</c></b>Hai There<d> for y o u @ ! $ @ %</d></a>")
         
+        #A simple test to check if insert works for tag and if it handles correctly a tag as input
+        def test_insert_simple_tag(self):
+            tag = self.simple_soup.c
+            tag.insert(0, 'its a tag ')
+            self.simple_soup.insert(3, tag)
+            #print(self.simple_soup)
+            self.assertEqual(str(self.simple_soup),"<a><b></b><d> for y o u @ ! $ @ %</d></a><c>its a tag Hi, I'm a test</c>" )
+            
         #A more complex test case checking elements position correctly
         def test_insert_positions_elements_correctly(self):
             self.simple_soup.a.insert(0, "Hai There")
             newText = self.simple_soup.find(text="Hai There")
             self.assertEqual(str(newText.next), "<b><c>Hi, I'm a test</c></b>")
             self.assertEqual(newText.previous.next, newText)
-        
-        #Test float position index > 1
-        #def test_insert_float(self):
-            #self.simple_soup.a.insert(1.4352, "Hai There")
-            #print(self.simple_soup)
-            #newText = self.simple_soup.find(text = "Hai There")
-            #self.assertEqual(newText.previous, "Hi, I'm a test")
-            
+    
         #Test float position index  where 0<=index<1
         def test_insert_float_zero(self):
             self.assertRaises(Exception, lambda: self.simple_soup.insert, 0.1231, "Hai There")
