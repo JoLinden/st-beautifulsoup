@@ -1,13 +1,7 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Nov 20 11:52:11 2020
-
-@author: aslan
-"""
-
 from bs4 import BeautifulSoup
 import unittest
-class TestInsert(unittest.TestCase):
+
+class TestInsertInsertBeforeInsertAfter(unittest.TestCase):
         def setUp(self):
             self.simple_soup = BeautifulSoup("<a><b><c>Hi, I'm a test</b></c><d> for y o u @ ! $ @ %</d></a>", 'html.parser')
             self.simple_soup1 = BeautifulSoup("<a>hey hey</a><b>and</b><c>goodbye</c>", 'html.parser')
@@ -17,7 +11,7 @@ class TestInsert(unittest.TestCase):
         #A really simple test case to check if we get expected output after applying insert as the documentation describes
         def test_insert_simple(self):
             self.simple_soup.a.insert(1, "Hai There")
-            self.assertEqual(str(self.simple_soup), "<a><b><c>Hi, I'm a test</c></b>Hai There</a><d> for y o u @ ! $ @ %</d>")
+            self.assertEqual(str(self.simple_soup), "<a><b><c>Hi, I'm a test</c></b>Hai There<d> for y o u @ ! $ @ %</d></a>")
         
         #A more complex test case checking elements position correctly
         def test_insert_positions_elements_correctly(self):
@@ -27,12 +21,12 @@ class TestInsert(unittest.TestCase):
             self.assertEqual(newText.previous.next, newText)
         
         #Test float position index > 1
-        def test_insert_float(self):
-            self.simple_soup.a.insert(1.4352, "Hai There")
+        #def test_insert_float(self):
+            #self.simple_soup.a.insert(1.4352, "Hai There")
             #print(self.simple_soup)
-            newText = self.simple_soup.find(text = "Hai There")
-            self.assertEqual(newText.previous, "Hi, I'm a test")
-        
+            #newText = self.simple_soup.find(text = "Hai There")
+            #self.assertEqual(newText.previous, "Hi, I'm a test")
+            
         #Test float position index  where 0<=index<1
         def test_insert_float_zero(self):
             self.assertRaises(Exception, lambda: self.simple_soup.insert, 0.1231, "Hai There")
@@ -45,7 +39,7 @@ class TestInsert(unittest.TestCase):
         def test_insert_posGreaterThanNumElements(self):
             self.simple_soup.a.insert(3, "Hai There")
             newText = self.simple_soup.find(text = "Hai There")
-            self.assertEqual(newText.previous, "Hi, I'm a test")
+            self.assertEqual(newText.previous, " for y o u @ ! $ @ %")
         
         #################################     Test insert_before()     ######################################
         
@@ -119,4 +113,4 @@ class TestInsert(unittest.TestCase):
         #####################################################################################################
             
 if __name__ == '__main__':
-    unittest.main()    
+    unittest.main()       
