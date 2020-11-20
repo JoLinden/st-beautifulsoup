@@ -6,7 +6,7 @@ class TestInsertInsertBeforeInsertAfter(unittest.TestCase):
             self.simple_soup = BeautifulSoup("<a><b><c>Hi, I'm a test</b></c><d> for y o u @ ! $ @ %</d></a>", 'html.parser')
             self.simple_soup1 = BeautifulSoup("<a>hey hey</a><b>and</b><c>goodbye</c>", 'html.parser')
         
-        ################################        Test insert         #####################################
+        ################################        Test insert()         #####################################
         
         #A really simple test case to check if we get expected output after applying insert as the documentation describes
         def test_insert_simple_string(self):
@@ -93,8 +93,8 @@ class TestInsertInsertBeforeInsertAfter(unittest.TestCase):
          #Test insert_after() multiple values
         def test_insert_after_more_than_one(self):
             self.simple_soup1.a.insert_after("Did I Say Hi?", "I thought i did", "-_-", "Well, who cares?")
-            self.simple_soup1.c.insert_after("Did I say goodbye", " (o_o) ", "Goodbyes are important", "Farewell then! : ) ")
-            self.assertEqual(str(self.simple_soup1), "<a>hey hey</a>Did I Say Hi?I thought i did-_-Well, who cares?<b>and</b><c>goodbye</c>Did I say goodbye (o_o) Goodbyes are importantFarewell then! : ) ")
+            self.simple_soup1.c.insert_after("Did I say goodbye", " (o_o) ", "Goodbyes are important, ", "Farewell then! : ) ")
+            self.assertEqual(str(self.simple_soup1), "<a>hey hey</a>Did I Say Hi?I thought i did-_-Well, who cares?<b>and</b><c>goodbye</c>Did I say goodbye (o_o) Goodbyes are important, Farewell then! : ) ")
         
         #Test insert_after(a) element a
         def test_insert_after_same_element(self):
@@ -111,7 +111,37 @@ class TestInsertInsertBeforeInsertAfter(unittest.TestCase):
         def test_insert_element_after_itself(self):
             self.assertRaises(ValueError, self.simple_soup1.a.insert_after, self.simple_soup1.a)
         
-        #####################################################################################################
+        ###############################      Test decompose()     #######################################
+        
+        #A simple Test to check decompose works as intended
+        def test_decompose_tag(self):
+            tag = self.simple_soup1.c
+            tag.decompose()
+            self.assertEqual(True, tag.decomposed)
             
+        #Test that when you decompose a tag that is empty it doesnt destroy it
+        def test_decompose_empty_tag(self):
+            soup = BeautifulSoup('<a></a>', 'html.parser')
+            tag = soup.a
+            self.assertEqual(False, tag.decomposed)
+            self.assertEqual(str(tag), '<a></a>')
+        
+        #An edge case test with empty nested tags decompose on inner tag
+        def test_decompose_inner_empty_nested_tags(self):
+            soup = BeautifulSoup('<a><b></b><d></d></a>', 'html.parser')
+            b_tag = soup.b
+            b_tag.decompose()
+            self.assertEqual(True, b_tag.decomposed)
+            self.assertEqual(str(soup),'<a><d></d></a>' )    
+        
+        #Similar as before but now decompose the outer element
+        def test_decompose_outer_empty_nested_tags(self):
+            soup = BeautifulSoup('<a><b></b><d></d></a>', 'html.parser')
+            a_tag = soup.a
+            a_tag.decompose()
+            self.assertEqual(True, a_tag.decomposed)
+            self.assertEqual(str(soup),'' )     
+        
+        
 if __name__ == '__main__':
     unittest.main()       
