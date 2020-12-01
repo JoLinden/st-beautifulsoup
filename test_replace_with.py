@@ -2,7 +2,10 @@ from bs4 import BeautifulSoup
 import unittest
 
 
+# Test the replace_with() method
 class TestReplaceWith(unittest.TestCase):
+
+    # We should be able to replace a string with a new string
     def test_replace_string_with_string(self):
         soup = BeautifulSoup('<i>Replace this text</i>', 'html.parser')
 
@@ -11,6 +14,7 @@ class TestReplaceWith(unittest.TestCase):
         self.assertEqual(soup,
                          BeautifulSoup('<i>Replaced text</i>', 'html.parser'))
 
+    # We should be able to replace a string with a new tag
     def test_replace_string_with_tag(self):
         soup = BeautifulSoup('<i>This text should be an empty div tag</i>',
                              'html.parser')
@@ -20,6 +24,7 @@ class TestReplaceWith(unittest.TestCase):
         self.assertEqual(soup,
                          BeautifulSoup('<i><div></div></i>', 'html.parser'))
 
+    # We should be able to replace a tag with a new string
     def test_replace_tag_with_string(self):
         soup = BeautifulSoup('<i>This text should be a div tag</i>',
                              'html.parser')
@@ -30,6 +35,7 @@ class TestReplaceWith(unittest.TestCase):
         self.assertEqual(soup,
                          BeautifulSoup(replacement, 'html.parser'))
 
+    # We should be able to replace a tag with a new tag
     def test_replace_tag_with_tag(self):
         soup = BeautifulSoup('<div>Make <b>this</b> italic.</div>',
                              'html.parser')
