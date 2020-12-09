@@ -15,29 +15,31 @@ class TestPrettify(unittest.TestCase):
     def tearDown(self):
         pass
 
-
+    # Test the first row after prettify
     def test_first_elem(self):
         arr = self.pretty.split("\n")
         self.assertEqual(arr[0], "<head>")
 
+    # Test that nested elements are indented, 1 space per level
     def test_indent(self):
         arr = self.pretty.split("\n")
         self.assertEqual(arr[1], " <title>")
         self.assertEqual(arr[2], "  First element")
 
+    # Test that all opening tags are included
     def test_open_tag(self):
         open_tags = ["<head>", "<title>", '<div class="second">', "<header>", "<div>"]
         for open_tag in open_tags:
             exist = open_tag in self.pretty_split
             self.assertTrue(exist)
-
+    # Test that all closing tags are included
     def test_closing_tag(self):
         closing_tags = ["</title>", "</head>", "</div>", "</header>"]
         for closing_tag in closing_tags:
             exist = closing_tag in self.pretty_split
             self.assertTrue(exist)
 
-
+    # Test that all text elements are included
     def test_text(self):
         text = ["First element", "Second element", "Other element"]
         for t in text:
