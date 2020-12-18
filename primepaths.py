@@ -28,3 +28,15 @@ class TestExtract(unittest.TestCase):
     def test_isnt3(self):
        soup2 = BeautifulSoup('''<header>another element</header>''')
        self.soup.div.insert(0, soup2)
+
+    # Prime path [1,3,5,7,10]
+    def test_ins4(self):
+        self.soup.div.insert(0, "Not a BeautifulSoup object")
+
+        self.assertEqual(
+            str(self.soup.div),
+            '<div class="second">Not a BeautifulSoup object'
+            'Second element</div>')
+
+if __name__ == '__main__':
+    unittest.main()
