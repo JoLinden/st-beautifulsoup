@@ -47,5 +47,17 @@ class TestExtract(unittest.TestCase):
             '<div class="second">Not a BeautifulSoup object'
             'Second element</div>')
 
+    # Prime path [1,3,5,7,8,9,8,9,8]
+    def test_ins6(self):
+        soup2 = BeautifulSoup('<header>another element</header>'
+                             '<div>Content</div>',
+                             'html.parser')
+        self.soup.div.insert(0, soup2)
+        self.assertListEqual(['<header>another element</header>',
+                              '<div>Content</div>',
+                              'Second element'],
+                             list(map(str, self.soup.div.contents)))
+
+
 if __name__ == '__main__':
     unittest.main()
