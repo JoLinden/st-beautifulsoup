@@ -1,0 +1,30 @@
+#!/usr/bin/env python
+
+from bs4 import BeautifulSoup
+import unittest
+
+class TestExtract(unittest.TestCase):
+    def setUp(self):
+        self.soup = BeautifulSoup('''<head><title>First element</title></head>
+                    <div class='second'>Second element</div>
+                    <header>Other element</header>
+                    <div>Last element</div>''', 'html.parser')
+
+    def tearDown(self):
+        pass
+
+    # Prime path [1,2]
+    def test_ins1(self):
+        with self.assertRaises(ValueError): # There is no head left
+            self.soup.head.insert(1, None)
+
+    # Prime path [1,3,4]
+    def test_ins2(self):
+        with self.assertRaises(ValueError): # There is no head left
+            self.soup.head.insert(1, self.soup.head)
+
+
+    # Prime path [1,3,5,7,8,9]
+    def test_isnt3(self):
+       soup2 = BeautifulSoup('''<header>another element</header>''')
+       self.soup.div.insert(0, soup2)
