@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, NavigableString
 import unittest
 
 class TestExtract(unittest.TestCase):
@@ -29,9 +29,18 @@ class TestExtract(unittest.TestCase):
        soup2 = BeautifulSoup('''<header>another element</header>''')
        self.soup.div.insert(0, soup2)
 
-    # Prime path [1,3,5,7,10]
+    # Prime path [1,3,5,6,7,10]
     def test_ins4(self):
         self.soup.div.insert(0, "Not a BeautifulSoup object")
+
+        self.assertEqual(
+            str(self.soup.div),
+            '<div class="second">Not a BeautifulSoup object'
+            'Second element</div>')
+
+    # Prime path [1,3,5,7,10]
+    def test_ins5(self):
+        self.soup.div.insert(0, NavigableString("Not a BeautifulSoup object"))
 
         self.assertEqual(
             str(self.soup.div),
