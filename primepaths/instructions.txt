@@ -1,0 +1,8 @@
+For the prime paths of the full graph, run:
+python PrimePath.py graphs/case_full
+
+For the prime paths of the full graph without recursive calls, run:
+python PrimePath.py graphs/case_full_non_recursive
+
+For the prime paths of the reduced graph without recursive calls, run:
+python PrimePath.py graphs/case_reduced
