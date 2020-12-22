@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup as bs
 import unittest
 
 class TestAppend(unittest.TestCase): 
-
+    # Simple Python string data type append test
     def test_string_append(self):
         soup = bs("<p>Hello World,</p>", "html.parser")    
         new_string = "Hi there"
@@ -10,7 +10,8 @@ class TestAppend(unittest.TestCase):
         self.assertEqual(len(soup.p.contents), 2)
         self.assertEqual(soup.p.contents[0], "Hello World,") 
         self.assertEqual(soup.p.contents[1], "Hi there")        
-       
+    
+    # Testing to append a html tag 
     def test_append_tag(self): 
         soup = bs("<div> Start of a tag </div>", "html.parser")
         new_p_tag = soup.new_tag("p")
@@ -21,7 +22,8 @@ class TestAppend(unittest.TestCase):
         self.assertIn(new_p_tag, soup.div) 
         self.assertIn("This tag was added in the parent", new_p_tag.string)
         self.assertEqual(len(soup.div.contents), 2) 
-      
+    
+    # Appending a tag to a specific element found by ID
     def test_append_with_id(self): 
         soup = bs("""<div id="test1"><h1> Title of something </h1></div>""", "html.parser")
         new_p_tag = soup.new_tag("p")
@@ -32,12 +34,14 @@ class TestAppend(unittest.TestCase):
         self.assertEqual(len(soup.div.contents), 2)
         self.assertEqual(soup.div.h1.next_sibling, new_p_tag)
     
+    # Appending to "empty html" 
     def test_append_empty(self): 
         soup = bs("", "html.parser")
         soup.append("hello world")
         self.assertEqual(len(soup.contents), 1) 
         self.assertIn("hello world", soup)
        
+    # Appending to html tags that do not exist. 
     def test_append_to_fake_html_tag(self): 
         soup = bs("<div><faketag> This is not a real html tag </faketag></div>", "html.parser")
         new_fake_tag = soup.new_tag("newTag")
@@ -49,6 +53,7 @@ class TestAppend(unittest.TestCase):
         self.assertEqual(len(soup.div.contents), 2)
         self.assertIn(new_fake_tag, soup.div)
     
+    # Testing the order which append works if there are several of the same tags
     def test_append_order(self): 
         soup = bs("""<div><h1>First h1</h1><p id="p1">Hello world </p><p id="p2">Other p tag </p></div>""", "html.parser")
         new_tag = soup.new_tag("testTag")
@@ -57,6 +62,7 @@ class TestAppend(unittest.TestCase):
         self.assertIn(new_tag, soup.find(id="p1"))
         self.assertNotIn(new_tag, soup.find(id="p2"))
     
+    # Appending a lot of tags test
     def test_lots_of_appends(self): 
         soup = bs("<div></div>", "html.parser")
         for _ in range(0, 200): 

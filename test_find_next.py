@@ -2,28 +2,32 @@ from bs4 import BeautifulSoup as bs
 import unittest
 
 class TestFindNext(unittest.TestCase):
-    
+    # Simple usage of the find method 
     def test_simple_given_find(self):
         soup = bs("<div><h1>Big Heading</h1><p>P tag with stuff</p><h2>Second heading</h2><p>Second p tag</p><footer>Footer stuff</footer></div>", "html.parser")
         self.assertEqual(soup.div.find_next("p").get_text(), "P tag with stuff")  
         
+    # Using find next method but without any given arguments to check what it will find    
     def test_simple_find_no_param(self):
         soup = bs("""<div><h1 id="test">Big Heading</h1><p>P tag with stuff</p><h2>Second heading</h2><p>Second p tag</p><footer>Footer stuff</footer></div>""", "html.parser")
         self.assertEqual(soup.div.find_next().get_text(), "Big Heading") 
         self.assertEqual(soup.div.find_next()["id"], "test") 
-        
+    
+    # Attempting to use the find method on html elements that do not exist
     def test_find_fake_tag(self): 
         soup = bs("<div> <faketag> this is a fake tag </faketag> </div>", "html.parser")
         fake_tag = soup.div.find_next()
         self.assertIn("<faketag> this is a fake tag </faketag>", str(fake_tag))
         self.assertEqual(fake_tag.get_text(), " this is a fake tag ")
-
+    
+    # Using find_next to find consecutive elements
     def test_find_chain(self): 
         soup = bs("<div> <p>first ptag</p><p>second ptag</p><p>third ptag</p> </div>", "html.parser")
         self.assertEqual("<p>first ptag</p>", str(soup.div.contents[0].find_next()))
         self.assertEqual("<p>second ptag</p>", str(soup.div.contents[1].find_next()))
         self.assertEqual("<p>third ptag</p>", str(soup.div.contents[2].find_next()))
 
+    # Attempting to find only using string argument
     def test_find_string(self): 
         soup = bs("<div><h1>First heading</h1><p>Hello world</p><p>second p tag</p></div>", "html.parser")
         first_string_found = soup.div.find_next(string=True)
