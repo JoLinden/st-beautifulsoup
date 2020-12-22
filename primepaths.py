@@ -25,9 +25,15 @@ class TestExtract(unittest.TestCase):
             self.soup.head.insert(1, self.soup.head)
 
     # Prime path [1,3,5,7,8,9]
-    def test_isnt3(self):
-        soup2 = BeautifulSoup('''<header>another element</header>''')
+    def test_insert(self):
+        soup2 = BeautifulSoup('<header>another element</header>',
+                              'html.parser')
         self.soup.div.insert(0, soup2)
+
+        self.assertEqual(
+            str(self.soup.div),
+            '<div class="second"><header>another element</header>'
+            'Second element</div>')
 
     # Prime path [1,3,5,6,7,10]
     def test_ins4(self):
